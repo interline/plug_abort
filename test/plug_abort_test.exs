@@ -4,48 +4,37 @@ defmodule AbortTest do
 
   import Abort.Util
 
-  defmodule JsonPlug do
-    use Plug.Router
-    import Abort
+  defmodule TestPlug do
+    defmacro __using__(type) do
+      quote do
+        use Plug.Builder
+        import Abort
 
-    plug Abort.Plug, :json
-    plug :match
-    plug :dispatch
+        plug Abort.Plug, unquote(type)
+        plug :handle
 
-    get "/:code" do
-      abort! int(code)
-    end
+        def handle(%Conn{path_info: [code]}, _) do
+          abort! int(code)
+        end
 
-    get "/:code/:message" do
-      abort! int(code), message
-    end
+        def handle(%Conn{path_info: [code, message]}, _) do
+          abort! int(code), message
+        end
 
-    defp int(code) do
-      {code, _} = Integer.parse(code)
-      code
+        defp int(code) do
+          {code, _} = Integer.parse(code)
+          code
+        end
+      end
     end
   end
 
+  defmodule JsonPlug do
+    use TestPlug, :json
+  end
+
   defmodule TextPlug do
-    use Plug.Router
-    import Abort
-
-    plug Abort.Plug, :text
-    plug :match
-    plug :dispatch
-
-    get "/:code" do
-      abort! int(code)
-    end
-
-    get "/:code/:message" do
-      abort! int(code), message
-    end
-
-    defp int(code) do
-      {code, _} = Integer.parse(code)
-      code
-    end
+    use TestPlug, :text
   end
 
   test :abort_json do

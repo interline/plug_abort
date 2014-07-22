@@ -7,9 +7,9 @@ defmodule Abort do
 
     abort =
       if nil? message do
-        quote do: {:abort, var!(conn), unquote(status)}
+        quote do: {:abort, unquote(status)}
       else
-        quote do: {:abort, var!(conn), unquote(status), unquote(message)}
+        quote do: {:abort, unquote(status), unquote(message)}
       end
 
     expression = opts[:unless]
@@ -76,9 +76,9 @@ defmodule Abort.Plug do
     try do
       stack.(conn)
     catch
-      {:abort, conn, status} ->
+      {:abort, status} ->
         send(conn, content_type, status, status_message(status))
-      {:abort, conn, status, message} ->
+      {:abort, status, message} ->
         send(conn, content_type, status, message)
     end
   end
