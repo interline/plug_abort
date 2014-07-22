@@ -2,7 +2,7 @@ Abort
 =====
 
 ```elixir
-defmodule TextPlug do
+defmodule Router do
   use Plug.Router
   import Abort
 
