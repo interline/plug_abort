@@ -87,11 +87,10 @@ defmodule Abort.Plug do
   defp send(conn, :text, status, message) do
     conn
     |> put_resp_content_type("text/plain")
-    |> send_resp(status, "#{status} #{message}")
+    |> send_resp(status, "#{message}")
   end
 
   defp send(conn, :json, status, message) do
-    error = %{error: message, code: status}
-    conn |> put_resp_content_type("application/json") |> send_resp(status, Jazz.encode!(error))
+    conn |> put_resp_content_type("application/json") |> send_resp(status, Jazz.encode!(message))
   end
 end

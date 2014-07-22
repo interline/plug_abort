@@ -42,7 +42,7 @@ defmodule AbortTest do
       message = status_message(code)
       conn = conn(:get, "/#{code}") |> call_json
       assert conn.status == code
-      assert %{"code" => ^code, "error" => ^message} = Jazz.decode! conn.resp_body
+      assert message == Jazz.decode! conn.resp_body
     end
   end
 
@@ -51,7 +51,7 @@ defmodule AbortTest do
       message = status_message(code)
       conn = conn(:get, "/#{code}") |> call_text
       assert conn.status == code
-      assert "#{code} #{message}" == conn.resp_body
+      assert message == conn.resp_body
     end
   end
 
