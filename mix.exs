@@ -18,6 +18,6 @@ defmodule Abort.Mixfile do
   defp deps do
     [{:cowboy, github: "extend/cowboy"},
      {:plug, "~> 0.5.1"},
-     {:jazz, github: "meh/jazz"}]
+     {:jazz, "~> 0.1.2"}]
   end
 end
