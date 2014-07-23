@@ -3,7 +3,7 @@ defmodule Abort.Mixfile do
 
   def project do
     [app: :plug_abort,
-     version: "0.0.3",
+     version: "0.0.5",
      elixir: "~> 0.14.2",
      deps: deps]
   end
